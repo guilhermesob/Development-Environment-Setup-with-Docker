@@ -19,7 +19,11 @@ RUN apt-get update && apt-get install -y \
     npm \
     neovim \
     vim \
-    && apt-get clean
+    yarn && apt-get clean
+
+# Install Rust (rustup and cargo)
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Install Ruby on Rails
 RUN gem install rails bundler
@@ -45,7 +49,12 @@ RUN pacman -Sy --noconfirm --needed \
     nodejs \
     npm \
     neovim \
-    vim
+    vim \
+    yarn
+
+# Install Rust (rustup and cargo)
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Install Ruby on Rails
 RUN gem install rails
