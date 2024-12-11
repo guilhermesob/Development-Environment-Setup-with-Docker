@@ -1,0 +1,22 @@
+FROM debian:bullseye
+
+# Atualiza o sistema e instala dependências
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    neovim \
+    python3-neovim \
+    ripgrep \
+    && apt-get clean
+
+# Clona o repositório NvChad no diretório de configuração do Neovim
+RUN git clone https://github.com/NvChad/starter ~/.config/nvim
+
+# Instala o Node.js v18 sem interação no terminal
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
+
+# Configura o diretório de trabalho
+WORKDIR /root
+
+# Executa o Neovim
+CMD ["nvim"]
