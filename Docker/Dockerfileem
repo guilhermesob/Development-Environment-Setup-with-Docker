@@ -1,0 +1,33 @@
+# Base image
+FROM ubuntu:22.04
+
+# Atualiza o sistema e instala dependências necessárias
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    emacs \
+    build-essential \
+    libgccjit-10-dev \
+    libgccjit-10-dev && rm -rf /var/lib/apt/lists/*
+
+# Configura variáveis de ambiente
+ENV USER=developer \
+    HOME=/home/developer
+
+# Cria um usuário não-root para usar o ambiente
+RUN useradd -ms /bin/bash $USER
+USER $USER
+WORKDIR $HOME
+
+# Clona e instala o Doom Emacs
+RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs \
+    && ~/.config/emacs/bin/doom install
+
+# Define o editor padrão como emacs
+ENV EDITOR="emacs"
+
+# Porta padrão (se necessário para desenvolvimento remoto, como no Codespaces)
+EXPOSE 3000
+
+# Comando padrão para iniciar um shell
+CMD ["/bin/bash"]
